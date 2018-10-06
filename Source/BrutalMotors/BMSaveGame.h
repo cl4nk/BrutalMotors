@@ -18,5 +18,5 @@ class BRUTALMOTORS_API UBMSaveGame : public USaveGame
 public:
 
 	UPROPERTY(BlueprintReadWrite)
-	TArray<FBMArchetypeItem> CarItems;
+	TArray<FBMCarItem> CarItems;
 };

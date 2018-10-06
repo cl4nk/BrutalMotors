@@ -8,10 +8,7 @@ void ABMPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	//Maybe use RPC functions instead of replicating
-	DOREPLIFETIME(ABMPlayerState, Wheel);
-	DOREPLIFETIME(ABMPlayerState, Frame);
-	DOREPLIFETIME(ABMPlayerState, PrimaryShoot);
-	DOREPLIFETIME(ABMPlayerState, SecondaryShoot);
+	DOREPLIFETIME(ABMPlayerState, CarConfig);
 }
 
 void ABMPlayerState::OverrideWith(APlayerState * PlayerState)
@@ -21,10 +18,7 @@ void ABMPlayerState::OverrideWith(APlayerState * PlayerState)
 	ABMPlayerState const * const BMPlayerState = Cast<ABMPlayerState>(PlayerState);
 	if (BMPlayerState)
 	{
-		Wheel = BMPlayerState->Wheel;
-		Frame = BMPlayerState->Frame;
-		PrimaryShoot = BMPlayerState->PrimaryShoot;
-		SecondaryShoot = BMPlayerState->SecondaryShoot;
+		CarConfig = BMPlayerState->CarConfig;
 	}
 }
 
@@ -35,9 +29,6 @@ void ABMPlayerState::CopyProperties(APlayerState * PlayerState)
 	ABMPlayerState * BMPlayerState = Cast<ABMPlayerState>(PlayerState);
 	if (BMPlayerState)
 	{
-		BMPlayerState->Wheel = Wheel;
-		BMPlayerState->Frame = Frame;
-		BMPlayerState->PrimaryShoot = PrimaryShoot;
-		BMPlayerState->SecondaryShoot = SecondaryShoot;
+		BMPlayerState->CarConfig = CarConfig;
 	}
 }

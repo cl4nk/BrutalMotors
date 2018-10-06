@@ -22,16 +22,7 @@ public:
 protected:
 
 	UPROPERTY(Transient, Replicated)
-	FBMArchetypeItem Wheel;
-
-	UPROPERTY(Transient, Replicated)
-	FBMArchetypeItem Frame;
-
-	UPROPERTY(Transient, Replicated)
-	FBMArchetypeItem PrimaryShoot;
-
-	UPROPERTY(Transient, Replicated)
-	FBMArchetypeItem SecondaryShoot;
+	FBMCarConfig CarConfig;
 
 	virtual void OverrideWith(APlayerState* PlayerState) override;
 	virtual void CopyProperties(APlayerState* PlayerState) override;

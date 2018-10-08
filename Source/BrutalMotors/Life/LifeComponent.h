@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "LifeComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Life), meta=(BlueprintSpawnableComponent) )
 class BRUTALMOTORS_API ULifeComponent : public UActorComponent
 {
@@ -23,10 +22,10 @@ public:
 	void AddLife(int32 const LifeToAdd, bool bEvenIfDead);
 
 	UFUNCTION(BlueprintPure)
-	int32 GetCurrentLife() const;
+	int32 GetMaxLife() const;
 
 	UFUNCTION(BlueprintPure)
-	int32 GetMaxLife() const;
+	int32 GetCurrentLife() const;
 
 	UFUNCTION(BlueprintPure)
 	float GetCurrentLifePercent() const;
@@ -48,21 +47,21 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void EndPlay(EEndPlayReason::Type const EndPlayReason) override;
 
-	void OnTakeDamage(class AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	void OnTakeDamage(class AActor* DamagedActor, float Damage, class UDamageType const* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	bool IsAllowedToModifyLife() const;
 
 	void NotifyServerLifeChanged();
 
+	UPROPERTY(EditAnywhere, BlueprintGetter = GetMaxLife, meta = (ClampMin = 0.0f))
+	int32 MaxLife;
+
 	UPROPERTY(BlueprintGetter = GetCurrentLife, ReplicatedUsing = OnRep_CurrentLife)
 	int32 CurrentLife;
 	UFUNCTION()
 	virtual void OnRep_CurrentLife();
-
-	UPROPERTY(EditAnywhere, BlueprintGetter = GetMaxLife, meta = (ClampMin = 0.0f))
-	int32 MaxLife;
 
 	bool bIsAlive;
 };

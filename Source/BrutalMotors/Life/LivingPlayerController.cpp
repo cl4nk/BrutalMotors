@@ -13,18 +13,18 @@ void ALivingPlayerController::BeginPlay()
 	LivingPlayerState = Cast<ALivingPlayerState>(PlayerState);
 }
 
-void ALivingPlayerController::Possess(APawn * Pawn)
+void ALivingPlayerController::Possess(APawn* Pawn)
 {
 	Super::Possess(Pawn);
 
 	if (!IsLocalController())
 	{
-		if (ULifeComponent * LifeComponent = Pawn->FindComponentByClass<ULifeComponent>())
+		if (ULifeComponent* LifeComponent = Pawn->FindComponentByClass<ULifeComponent>())
 		{
 			LifeComponent->LifeChanged.AddDynamic(this, &ALivingPlayerController::OnLifeChanged);
 			LifeComponent->DeathChanged.AddDynamic(this, &ALivingPlayerController::OnDeathChanged);
 
-			if (ALivingPlayerState * LivingPlayerState = GetLivingPlayerState())
+			if (ALivingPlayerState* LivingPlayerState = GetLivingPlayerState())
 			{
 				LivingPlayerState->Health = LifeComponent->GetCurrentLife();
 			}
@@ -34,10 +34,10 @@ void ALivingPlayerController::Possess(APawn * Pawn)
 
 void ALivingPlayerController::UnPossess()
 {
-	APawn const * const Pawn = GetPawn();
+	APawn const* const Pawn = GetPawn();
 	if (Pawn && !IsLocalController())
 	{
-		if (ULifeComponent * LifeComponent = Pawn->FindComponentByClass<ULifeComponent>())
+		if (ULifeComponent* LifeComponent = Pawn->FindComponentByClass<ULifeComponent>())
 		{
 			LifeComponent->LifeChanged.RemoveAll(this);
 			LifeComponent->DeathChanged.RemoveAll(this);
@@ -47,23 +47,23 @@ void ALivingPlayerController::UnPossess()
 	Super::UnPossess();
 }
 
-ALivingPlayerState * ALivingPlayerController::GetLivingPlayerState() const
+ALivingPlayerState* ALivingPlayerController::GetLivingPlayerState() const
 {
 	return LivingPlayerState.Get();
 }
 
-void ALivingPlayerController::OnLifeChanged(int32 Life, float LifePercent)
+void ALivingPlayerController::OnLifeChanged(int32 const Life, float const LifePercent)
 {
-	ALivingPlayerState * LivingPlayerState = GetLivingPlayerState();
+	ALivingPlayerState* LivingPlayerState = GetLivingPlayerState();
 	if (LivingPlayerState)
 	{
 		LivingPlayerState->Health = Life;
 	}
 }
 
-void ALivingPlayerController::OnDeathChanged(bool bIsAlive)
+void ALivingPlayerController::OnDeathChanged(bool const bIsAlive)
 {
-	APawn * Pawn = GetPawn();
+	APawn* Pawn = GetPawn();
 	if (Pawn)
 	{
 		if (bIsAlive)

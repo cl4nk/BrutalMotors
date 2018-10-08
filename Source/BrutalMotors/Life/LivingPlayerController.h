@@ -18,17 +18,17 @@ class BRUTALMOTORS_API ALivingPlayerController : public APlayerController
 	
 public:
 
-	virtual void Possess(APawn * Pawn) override;
+	virtual void Possess(APawn* Pawn) override;
 	virtual void UnPossess() override;
 
-	ALivingPlayerState * GetLivingPlayerState() const;
+	ALivingPlayerState* GetLivingPlayerState() const;
 	
 protected:
 
 	virtual void BeginPlay() override;
 
-	void OnLifeChanged(int32 Life, float LifePercent);
-	void OnDeathChanged(bool bIsAlive);
+	void OnLifeChanged(int32 const Life, float const LifePercent);
+	void OnDeathChanged(bool const bIsAlive);
 
 private:
 

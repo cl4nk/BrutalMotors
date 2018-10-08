@@ -41,7 +41,7 @@ int32 ULifeComponent::GetMaxLife() const
 
 float ULifeComponent::GetCurrentLifePercent() const
 {
-	return (float) CurrentLife / (float) MaxLife;
+	return static_cast<float>(CurrentLife) / static_cast<float>(MaxLife);
 }
 
 void ULifeComponent::Reset()
@@ -52,7 +52,7 @@ void ULifeComponent::Reset()
 
 bool ULifeComponent::IsAlive() const
 {
-	check(CurrentLife > 0);
+	check(CurrentLife >= 0);
 	return bIsAlive;
 }
 
@@ -69,7 +69,7 @@ void ULifeComponent::BeginPlay()
 	}
 }
 
-void ULifeComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void ULifeComponent::EndPlay(EEndPlayReason::Type const EndPlayReason)
 {
 	GetOwner()->OnTakeAnyDamage.RemoveAll(this);
 
@@ -80,7 +80,7 @@ void ULifeComponent::OnRep_CurrentLife()
 {
 	LifeChanged.Broadcast(GetCurrentLife(), GetCurrentLifePercent());
 
-	bool bWasAlive = bIsAlive;
+	bool const bWasAlive = bIsAlive;
 	bIsAlive = CurrentLife > 0;
 	if (bWasAlive != bIsAlive)
 	{
@@ -88,7 +88,7 @@ void ULifeComponent::OnRep_CurrentLife()
 	}
 }
 
-void ULifeComponent::OnTakeDamage(AActor * DamagedActor, float Damage, const UDamageType * DamageType, AController * InstigatedBy, AActor * DamageCauser)
+void ULifeComponent::OnTakeDamage(AActor* DamagedActor, float Damage, UDamageType const* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	check(IsAllowedToModifyLife());
 
@@ -101,11 +101,11 @@ void ULifeComponent::OnTakeDamage(AActor * DamagedActor, float Damage, const UDa
 
 bool ULifeComponent::IsAllowedToModifyLife() const
 {
-	AActor const * const Owner = GetOwner();
-	bool const bIsNetRoleCorrect = Owner ? Owner->Role == ROLE_Authority : false;
-	UWorld const * const World = Owner ? Owner->GetWorld() : nullptr;
-	AGameModeBase const * const GameMode = World ? World->GetAuthGameMode() : nullptr;
-	return GameMode && bIsNetRoleCorrect;
+	AActor const* const owner = GetOwner();
+	bool const bIsNetRoleCorrect = owner ? owner->Role == ROLE_Authority : false;
+	UWorld const* const world = owner ? owner->GetWorld() : nullptr;
+	AGameModeBase const* const gameMode = world ? world->GetAuthGameMode() : nullptr;
+	return gameMode && bIsNetRoleCorrect;
 }
 
 void ULifeComponent::NotifyServerLifeChanged()
@@ -116,7 +116,7 @@ void ULifeComponent::NotifyServerLifeChanged()
 	}
 }
 
-void ULifeComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+void ULifeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 

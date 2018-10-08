@@ -8,7 +8,7 @@
 UENUM(BlueprintType)
 enum class EBMArchetype : uint8
 {
-	None,
+	None = 0,
 	Meca,
 	Techno,
 	Magic
@@ -18,31 +18,31 @@ USTRUCT(BlueprintType)
 struct FBMCarItem
 {
 	GENERATED_BODY()
-public:
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TEnumAsByte<EBMArchetype> Archetype;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ClampMin = 0))
 	int32 Id;
 
-	bool operator==(const FBMCarItem& rhs) const
+	bool operator==(FBMCarItem const& rhs) const
 	{
 		return Archetype == rhs.Archetype && Id == rhs.Id;
 	}
 };
 
-inline uint32 GetTypeHash(const FBMCarItem & Item)
+inline uint32 GetTypeHash(FBMCarItem const& Item)
 {
-	return FCrc::MemCrc_DEPRECATED(&Item, sizeof(Item));
+	return FCrc::MemCrc32(&Item, sizeof(Item));
 }
 
 USTRUCT(BlueprintType)
 struct FBMCarConfig
 {
 	GENERATED_BODY()
-public:
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FBMCarItem Wheel;
 
